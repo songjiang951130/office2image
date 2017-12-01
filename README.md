@@ -1,2 +1,1 @@
-# coderecord
-my code in leetcode
+Recording My Way 
