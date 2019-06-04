@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Class-Path: /$PROJECT_DIR/WEB_INF/classes
+

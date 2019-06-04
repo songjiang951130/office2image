@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <servlet>
+        <!-- servlet配置的名称，可任意命名 -->
+        <servlet-name>AsposeServlet</servlet-name>
+        <!-- 需要配置的servlet的全限定类名 -->
+        <servlet-class>com.haibian.material.servlet.AsposeServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <!-- 需要与上面配置的servlet名称一致 -->
+        <servlet-name>AsposeServlet</servlet-name>
+        <!-- 触发servlet的URL后缀 -->
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+
+
+    <!--  提供跨域支持 -->
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>com.haibian.material.filter.CrossFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+</web-app>
