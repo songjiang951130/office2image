@@ -66,3 +66,6 @@ pdf
     "errmsg": "success"
 }
 ```
+
+todo：
+根据文件真实扩展名而不是文件的后缀，来处理文件（bug: 名为***.ppt的文件实际上是pptx文件）
