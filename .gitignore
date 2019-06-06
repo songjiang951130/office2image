@@ -2,3 +2,4 @@ out/*
 target/*
 .idea/*
 MyAspose.iml
+src/main/resources/qiniu.properties
