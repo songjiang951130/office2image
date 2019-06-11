@@ -4,7 +4,6 @@ package com.haibian.material.service.thread;
 import com.aspose.words.Document;
 import com.aspose.words.ImageSaveOptions;
 
-import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 
 public class WordRunnable implements Runnable{
@@ -23,6 +22,7 @@ public class WordRunnable implements Runnable{
     @Override
     public void run() {
         options.setPageIndex(index);
+        System.out.println("word index:"+index);
         long nanoTime = System.nanoTime();
         String tmpPath = "/tmp/word_" + nanoTime + ".jpeg";
         try {

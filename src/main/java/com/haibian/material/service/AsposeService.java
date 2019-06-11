@@ -15,10 +15,7 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AsposeService {
 
@@ -103,19 +100,22 @@ public class AsposeService {
         }
         document.setFontSettings(fontSettings);
         com.aspose.words.ImageSaveOptions options = new com.aspose.words.ImageSaveOptions(com.aspose.words.SaveFormat.JPEG);
-        options.setJpegQuality(100);
-        //处理word
+        options.setJpegQuality(80);
         //处理3页一下的预览图
         int cap = Integer.min(document.getPageCount(), AsposeService.PREVIEW_COUNT);
-        WordRunnable.setConfig(cap);
+        List<String> list = new ArrayList<>();
         for (int index = 0; index < cap; index++) {
-            new Thread(new WordRunnable(document, options, index)).start();
+            System.out.println("word index:"+index);
+            long nanoTime = System.nanoTime();
+            String tmpPath = "/tmp/word_" + nanoTime + ".jpeg";
+            document.save(tmpPath, options);
+            list.add(tmpPath);
         }
-        //等待线程执行执行结束
-        WordRunnable.countDownLatch.await();
-        List<String> list = Arrays.asList(WordRunnable.tempImage);
-        System.out.println("多线程结果：" + list.toString());
         return this.upload(list);
+    }
+
+    private String wordImageLine(InputStream inputStream){
+        return "ss";
     }
 
 
@@ -157,7 +157,7 @@ public class AsposeService {
         Workbook workbook = new Workbook(inputStream);
         Worksheet sheet = workbook.getWorksheets().get(0);
         ImageOrPrintOptions imgOptions = new ImageOrPrintOptions();
-        imgOptions.setQuality(100);
+        imgOptions.setQuality(80);
         SheetRender sheetRender = new SheetRender(sheet, imgOptions);
         for (int index = 0; index < sheetRender.getPageCount() && index < 3; index++) {
             long start = System.currentTimeMillis();
