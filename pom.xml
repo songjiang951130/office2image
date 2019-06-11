@@ -129,7 +129,7 @@
             <artifactId>aspose-words</artifactId>
             <version>19.5</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/aspose-words-19.5jdk.jar</systemPath>
+            <systemPath>src/main/webapp/WEB-INF/aspose-words-19.5jdk.jar</systemPath>
         </dependency>
         <!--        <dependency>-->
         <!--            <groupId>com.aspose</groupId>-->
