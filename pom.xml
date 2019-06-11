@@ -123,7 +123,6 @@
         </dependency>
 
 
-
         <!-- 引入自定义破解jar包 -->
         <dependency>
             <groupId>com.aspose</groupId>
@@ -132,6 +131,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/aspose-words-19.5jdk.jar</systemPath>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.aspose</groupId>-->
+        <!--            <artifactId>aspose-words</artifactId>-->
+        <!--            <version>19.5</version>-->
+        <!--            <scope>system</scope>-->
+        <!--            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/aspose-words-19.6-jdk17.jar</systemPath>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>com.aspose</groupId>

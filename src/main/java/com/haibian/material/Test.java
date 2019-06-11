@@ -1,6 +1,5 @@
 package com.haibian.material;
 
-
 import com.haibian.material.tools.QiNiuUtil;
 
 public class Test {
@@ -8,4 +7,5 @@ public class Test {
         QiNiuUtil util = new QiNiuUtil();
         System.out.println(util.getUpToken());
     }
+
 }

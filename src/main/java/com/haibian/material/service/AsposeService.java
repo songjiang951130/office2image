@@ -6,7 +6,6 @@ import com.aspose.words.FontSettings;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.haibian.material.service.thread.WordRunnable;
 import com.haibian.material.tools.Log4JUtil;
 import com.haibian.material.tools.QiNiuUtil;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -14,8 +13,14 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AsposeService {
 
@@ -105,19 +110,15 @@ public class AsposeService {
         int cap = Integer.min(document.getPageCount(), AsposeService.PREVIEW_COUNT);
         List<String> list = new ArrayList<>();
         for (int index = 0; index < cap; index++) {
-            System.out.println("word index:"+index);
+            System.out.println("word index new :" + index);
             long nanoTime = System.nanoTime();
             String tmpPath = "/tmp/word_" + nanoTime + ".jpeg";
+            options.setPageIndex(index);
             document.save(tmpPath, options);
             list.add(tmpPath);
         }
         return this.upload(list);
     }
-
-    private String wordImageLine(InputStream inputStream){
-        return "ss";
-    }
-
 
     private String pdfImage(InputStream inputStream) throws IOException {
         return pdf2Image(inputStream);

@@ -55,8 +55,6 @@ public class PoiService {
         if (-1 == this.getType(extendName)) {
             return "";
         }
-        getLicense();
-
         switch (extendName) {
             case "ppt":
                 return this.ppt2Image(inputStream).toString();
@@ -66,8 +64,8 @@ public class PoiService {
         return "file type is not support";
     }
 
-    public static boolean getLicense() {
-        return AsposeService.getLicense();
+    public List<String> word2Pdf() {
+        return  null;
     }
 
     /**
