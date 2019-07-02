@@ -133,22 +133,28 @@ public class AsposeService {
      */
     private String pdf2Image(InputStream inputStream) throws IOException {
         JsonArray jsonArray = new JsonArray();
-        PDDocument doc = PDDocument.load(inputStream);
-        PDFRenderer renderer = new PDFRenderer(doc);
-        int pageCount = doc.getNumberOfPages();
-        for (int index = 0; index < pageCount && index < PoiService.PREVIEW_COUNT; index++) {
-            BufferedImage image = renderer.renderImageWithDPI(index, 144);
-            long nanoTime = System.currentTimeMillis();
-            String tmpPath = "/tmp/pdf_" + nanoTime + ".jpeg";
-            OutputStream imageStream = new FileOutputStream(tmpPath);
-            ImageIO.write(image, "jpeg", imageStream);
+        PDDocument doc = null;
+        try {
+            doc = PDDocument.load(inputStream);
+            PDFRenderer renderer = new PDFRenderer(doc);
+            int pageCount = doc.getNumberOfPages();
+            for (int index = 0; index < pageCount && index < PoiService.PREVIEW_COUNT; index++) {
+                BufferedImage image = renderer.renderImageWithDPI(index, 144);
+                long nanoTime = System.currentTimeMillis();
+                String tmpPath = "/tmp/pdf_" + nanoTime + ".jpeg";
+                OutputStream imageStream = new FileOutputStream(tmpPath);
+                ImageIO.write(image, "jpeg", imageStream);
 
-            imageStream.close();
-            String result = this.upload(tmpPath);
-            JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
-            jsonArray.add(jsonObject);
+                imageStream.close();
+                String result = this.upload(tmpPath);
+                JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
+                jsonArray.add(jsonObject);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            doc.close();
         }
-        doc.close();
         return jsonArray.toString();
     }
 

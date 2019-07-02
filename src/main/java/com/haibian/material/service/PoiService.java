@@ -65,7 +65,7 @@ public class PoiService {
     }
 
     public List<String> word2Pdf() {
-        return  null;
+        return null;
     }
 
     /**
@@ -81,7 +81,7 @@ public class PoiService {
         XSLFSlide[] slides = xmlSlideShow.getSlides();
         Dimension onePPTPageSize = xmlSlideShow.getPageSize();
         int cap = slides.length < PoiService.PREVIEW_COUNT ? slides.length : PoiService.PREVIEW_COUNT;
-
+        System.out.println("cap:" + cap + " length:" + slides.length);
         for (int index = 0; index < cap; index++) {
             XSLFShape[] shapes = slides[index].getShapes();
             for (XSLFShape shape : shapes) {
