@@ -14,7 +14,6 @@ public class PoiTest {
         File file = new File("file/pdf/资料站整体优化.pdf");
         AsposeService service = new AsposeService();
         String result = service.handle("pdf", new FileInputStream(file));
-
         System.out.println(result);
     }
 
@@ -26,7 +25,7 @@ public class PoiTest {
         JsonArray jsonArray = (JsonArray) new JsonParser().parse(result);
         for (JsonElement element : jsonArray) {
             String url = element.getAsJsonObject().get("url").toString();
-            Assert.assertTrue(url.startsWith("http"));
+            Assert.assertTrue(url.startsWith("\"http"));
         }
     }
 }

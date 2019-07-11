@@ -121,7 +121,7 @@ public class AsposeService {
     }
 
     private String pdfImage(InputStream inputStream) throws IOException {
-        List fileList =  pdf2Image(inputStream);
+        List fileList = pdf2Image(inputStream);
         return this.upload(fileList);
     }
 
@@ -142,7 +142,7 @@ public class AsposeService {
             for (int index = 0; index < pageCount && index < PoiService.PREVIEW_COUNT; index++) {
                 BufferedImage image = renderer.renderImageWithDPI(index, 144);
                 long nanoTime = System.currentTimeMillis();
-                String tmpPath = "/tmp/pdf_" + nanoTime + ".jpeg";
+                String tmpPath = "/tmp/pdf_" + index +"_"+ nanoTime + ".jpeg";
                 OutputStream imageStream = new FileOutputStream(tmpPath);
                 ImageIO.write(image, "jpeg", imageStream);
                 imageStream.close();

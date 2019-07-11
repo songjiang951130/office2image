@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import static com.haibian.material.tools.Log4JUtil.logger;
+
 
 public class QiNiuUtil {
 
@@ -27,8 +29,9 @@ public class QiNiuUtil {
     private String accessKey;
     private String secretKey;
     private String bucketName;
+    public UploadManager uploadManager;
 
-    public QiNiuUtil(){
+    public QiNiuUtil() {
         Properties properties = new Properties();
         InputStream in = QiNiuUtil.class.getClassLoader().getResourceAsStream("qiniu.properties");
         try {
@@ -42,9 +45,12 @@ public class QiNiuUtil {
         accessKey = properties.getProperty("ACCESS_KEY");
         secretKey = properties.getProperty("SECRET_KEY");
         bucketName = properties.getProperty("BUCKET_NAME");
+        Configuration configuration = new Configuration();
+        configuration.connectTimeout = 2;
+        configuration.writeTimeout = 10;
+        configuration.readTimeout = 10;
+        uploadManager = new UploadManager(configuration);
     }
-
-    public UploadManager uploadManager = new UploadManager(new Configuration());
 
 
     public String getUpToken() {
@@ -52,20 +58,20 @@ public class QiNiuUtil {
         return auth.uploadToken(bucketName);
     }
 
-
-
     public String upload(String fromFilePath, String toFilePath) {
         Gson gson = new Gson();
         Map<String, String> map = new HashMap<>();
         try {
             //调用put方法上传
-            Log4JUtil.logger.info("from path:" + fromFilePath + " toFilePath:" + toFilePath);
+            logger.info("from path:" + fromFilePath + " toFilePath:" + toFilePath);
             Response res = uploadManager.put(fromFilePath, toFilePath, getUpToken());
+            logger.info("上传结束" + fromFilePath + " toFilePath:" + toFilePath);
             // 删除本地临时目录
             FileUtil.delete(fromFilePath);
             if (res.statusCode == 200) {
                 //{"hash":"FsFL4yz4bUyYkDTHUbFB5KYEUiqE","key":"example.php"}
                 String json = res.bodyString();
+                logger.info("七牛云结果：" + json);
                 JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
                 String val = domain + "/" + jsonObject.get("key").getAsString();
                 map.put("url", val);
@@ -74,9 +80,8 @@ public class QiNiuUtil {
             }
         } catch (QiniuException e) {
             e.printStackTrace();
-            Log4JUtil.logger.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
-
         return gson.toJson(map);
     }
 

@@ -29,6 +29,9 @@ public class FileUtil {
             e.printStackTrace();
         }
         String host = uri.getHost();
+        String scheme = uri.getScheme();
+        logger.info("scheme:" + scheme);
+
         String rightUrl = fileUrl.substring(fileUrl.indexOf(host) + host.length()+1);
         logger.info("rightUrl:" + rightUrl);
         String newFileUrl = "http://" + host +"/"+ URLEncoder.encode(rightUrl, "utf-8");
@@ -46,7 +49,7 @@ public class FileUtil {
         InputStream inputStream = connection.getInputStream();
         //java 1.9 可以用以下方法
         long nano = System.currentTimeMillis();
-        File file = new File("/tmp/save_" + nano + "." + getExtendName(fileUrl));
+        File file = new File("/tmp/save_" + nano + "." + getExtendName(newFileUrl));
         FileOutputStream fos = new FileOutputStream(file);
         int length = 0;
         byte buffer[] = new byte[1024];
