@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,9 @@ public class AsposeServlet extends HttpServlet {
             return;
         }
         String localPath = FileUtil.save(fileUrl);
+        if (localPath.equals("")) {
+            outputJson(response, 10404, "文件未找到");
+        }
         request.setAttribute("file", localPath);
         AsposeService asposeService = new AsposeService();
         String extendName = FileUtil.getExtendName(fileUrl);

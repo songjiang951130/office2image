@@ -121,7 +121,8 @@ public class AsposeService {
     }
 
     private String pdfImage(InputStream inputStream) throws IOException {
-        return pdf2Image(inputStream);
+        List fileList =  pdf2Image(inputStream);
+        return this.upload(fileList);
     }
 
     /**
@@ -131,9 +132,9 @@ public class AsposeService {
      * @return
      * @throws IOException
      */
-    private String pdf2Image(InputStream inputStream) throws IOException {
-        JsonArray jsonArray = new JsonArray();
+    private List<String> pdf2Image(InputStream inputStream) throws IOException {
         PDDocument doc = null;
+        List<String> fileList = new ArrayList<>();
         try {
             doc = PDDocument.load(inputStream);
             PDFRenderer renderer = new PDFRenderer(doc);
@@ -144,18 +145,17 @@ public class AsposeService {
                 String tmpPath = "/tmp/pdf_" + nanoTime + ".jpeg";
                 OutputStream imageStream = new FileOutputStream(tmpPath);
                 ImageIO.write(image, "jpeg", imageStream);
-
                 imageStream.close();
-                String result = this.upload(tmpPath);
-                JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
-                jsonArray.add(jsonObject);
+                fileList.add(tmpPath);
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            doc.close();
+            if (doc != null) {
+                doc.close();
+            }
         }
-        return jsonArray.toString();
+        return fileList;
     }
 
     public String excelImage(InputStream inputStream) throws Exception {
