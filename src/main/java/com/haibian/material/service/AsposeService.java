@@ -96,7 +96,13 @@ public class AsposeService {
         return jsonArray.toString();
     }
 
-    private String wordImage(InputStream inputStream) throws Exception {
+    public String wordImage(InputStream inputStream) throws Exception {
+        List<String> fileList = this.word2Image(inputStream);
+        return this.upload(fileList);
+    }
+
+    public List<String> word2Image(InputStream inputStream) throws Exception {
+        List<String> fileList = new ArrayList<>();
         Document document = new Document(inputStream);
         //设置字体防止中文乱码
         FontSettings fontSettings = new FontSettings();
@@ -108,20 +114,18 @@ public class AsposeService {
         options.setJpegQuality(80);
         //处理3页一下的预览图
         int cap = Integer.min(document.getPageCount(), AsposeService.PREVIEW_COUNT);
-        List<String> list = new ArrayList<>();
         for (int index = 0; index < cap; index++) {
-            System.out.println("word index new :" + index);
             long nanoTime = System.nanoTime();
             String tmpPath = "/tmp/word_" + nanoTime + ".jpeg";
             options.setPageIndex(index);
             document.save(tmpPath, options);
-            list.add(tmpPath);
+            fileList.add(tmpPath);
         }
-        return this.upload(list);
+        return fileList;
     }
 
     private String pdfImage(InputStream inputStream) throws IOException {
-        List fileList = pdf2Image(inputStream);
+        List<String> fileList = pdf2Image(inputStream);
         return this.upload(fileList);
     }
 
@@ -142,7 +146,7 @@ public class AsposeService {
             for (int index = 0; index < pageCount && index < PoiService.PREVIEW_COUNT; index++) {
                 BufferedImage image = renderer.renderImageWithDPI(index, 144);
                 long nanoTime = System.currentTimeMillis();
-                String tmpPath = "/tmp/pdf_" + index +"_"+ nanoTime + ".jpeg";
+                String tmpPath = "/tmp/pdf_" + index + "_" + nanoTime + ".jpeg";
                 OutputStream imageStream = new FileOutputStream(tmpPath);
                 ImageIO.write(image, "jpeg", imageStream);
                 imageStream.close();
@@ -160,7 +164,6 @@ public class AsposeService {
 
     public String excelImage(InputStream inputStream) throws Exception {
         JsonArray jsonArray = new JsonArray();
-
         Workbook workbook = new Workbook(inputStream);
         Worksheet sheet = workbook.getWorksheets().get(0);
         ImageOrPrintOptions imgOptions = new ImageOrPrintOptions();
